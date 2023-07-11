@@ -1,12 +1,5 @@
 import {
-	Address,
-	byteArrayToHex,
-	PBinaryWriter,
 	PhantasmaAPI,
-	PollChoice,
-	ScriptBuilder,
-	Transaction,
-	VMType
 } from 'phantasma-ts/core';
 import {
 	DepositAddress,
@@ -22,25 +15,10 @@ import {
 } from '$lib/store';
 import type { PhantasmaLink } from 'phantasma-ts';
 import {
-	Base16,
-	ConsensusMode,
-	ConsensusPoll,
-	hexStringToUint8Array,
-	PBinaryReader,
-	PollState,
-	Serialization,
-	stringToUint8Array,
-	Timestamp,
-	uint8ArrayToString,
-	VMObject
-} from 'phantasma-ts/core';
-import {
 	NotificationError,
 	NotificationSuccess
 } from '$lib/Components/Notification/NotificationsBuilder';
 import { ethers, parseUnits } from 'ethers';
-//import { web3 } from 'svelte-web3';
-import {Web3,  Contract } from 'web3';
 
 let Link: PhantasmaLink;
 LinkWallet.subscribe((link: any) => {
@@ -66,117 +44,6 @@ export function removeHTMLEntities(str) {
 	return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 }
 
-export function shuffleArray<T>(array: T[]): T[] {
-	for (let i = array.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
-	}
-	return array;
-}
-/**
- * Get Tokens details by token symbol.
- * @param symbol
- * @returns
- */
-export async function GetTokenDetails(symbol: string) {
-	return await api.getToken(symbol);
-}
-
-/**
- * Get transaction by Hash
- * @param txHash
- * @returns
- */
-export async function GetTransactionByHash(txHash: string) {
-	return await api.getTransaction(txHash);
-}
-
-/**
- *
- * @param data
- * @returns
- */
-export function DecodeInformation(data: string): VMObject {
-	const bytes = Base16.decodeUint8Array(data.toUpperCase());
-	const vm = new VMObject();
-	const reader = new PBinaryReader(bytes);
-	vm.UnserializeData(reader);
-	return vm;
-}
-
-// "04534f554c044b43414c2f5333644a57614c444b596868544866323845667350366174655a35773554655a55535638774d394a4e6661443739452f53336450364c52433366337877345a5a324848394251487a594e4875485338766574624351706b4d4676526d5645460600b4f135010007221d65b56004000203000d0000b036cc325c3eb5df1633000696d2a1ca0100010006c477e55f05000100"
-/**
- *
- * @param bytes
- * @param rawHex
- * @returns
- */
-export function DecodeStruct(bytes: Uint8Array, rawHex: string): any {
-	const result = {};
-	const reader = new PBinaryReader(bytes);
-	console.log(rawHex);
-	if (rawHex[1] == '4') {
-		console.log(reader.readString());
-		rawHex = rawHex.slice(reader.position, rawHex.length);
-		return DecodeStruct(bytes, rawHex);
-	}
-
-	if (rawHex[1] == '5') {
-		console.log(reader.readInt());
-	}
-	return result;
-}
-
-/**
- *
- * @param vm
- * @returns
- */
-export function FormatData(vm: VMObject): any {
-	const result: any = {};
-	if (vm.Data instanceof Map && vm.Data instanceof Map<VMObject, VMObject>) {
-		console.log('map', vm);
-		/*if (vm.Data.size == 4) {
-			let index = 0;
-			let _keyAddress = '';
-			for (const item of vm.Data.keys()) {
-				_keyAddress = item.AsString();
-				index++;
-				if (index == 3) break;
-			}
-
-			if (_keyAddress == 'LengthInBytes') {
-				//return Address.FromBytes(Base16.decodeUint8Array(hexData.toUpperCase()));
-			}
-		}*/
-		for (const item of vm.Data) {
-			console.log(item);
-			const _key = item[0].AsString();
-			result[_key] = FormatData(item[1]);
-		}
-	} else if (vm.Data instanceof Array) {
-		const arr: any[] = [];
-		console.log('array', vm);
-
-		for (const item of vm.Data) {
-			console.log('array item', item);
-			arr.push(FormatData(item));
-		}
-		return arr;
-	} else if (vm.Data instanceof VMObject) {
-		console.log('vm data', vm);
-		return FormatData(vm.Data);
-	} else {
-		console.log('vm', vm);
-		/*if (vm.Type == VMType.Bytes) {
-			const data = DecodeInformation(vm.AsString());
-			return FormatData(data);
-		}*/
-		return vm.AsString();
-	}
-	return result;
-}
-
 let provider: ethers.BrowserProvider | null = null;
 let signer: ethers.Signer | null = null;
 let account: string | null = null;
@@ -192,6 +59,9 @@ EthereumAddress.subscribe((_account) => {
 	account = _account;
 });
 
+/**
+ * Connect to MetaMask
+ */
 export async function ConnectToMetamask() {
 	if (typeof window.ethereum !== 'undefined') {
 		provider = new ethers.BrowserProvider(window.ethereum);
@@ -213,21 +83,9 @@ export async function ConnectToMetamask() {
 	}
 }
 
-export async function ConnectToMetamaskV2() {
-	try {
-		if ( typeof window.ethereum !== 'undefined' ) {
-			await window.ethereum.request({ method: 'eth_requestAccounts' });
-			const accounts = await ethereum.request({ method: 'eth_accounts' });;
-			ethereum.defaultAccount = accounts[0];
-			console.log('Connected to MetaMask', accounts[0]);
-		}else {
-			NotificationError('Wallet Error!', 'Please install MetaMask first.');
-		}
-	  } catch (error) {
-		console.error('MetaMask connection error:', error);
-	  }
-}
-
+/**
+ * Disconnect from MetaMask
+ */
 export async function DisconnectFromMetamask() {
 	if (typeof window.ethereum !== 'undefined') {
 		await provider?.send('eth_requestAccounts', []);
@@ -245,7 +103,12 @@ export async function DisconnectFromMetamask() {
 	}
 }
 
-// This should be called for KCAL and for SOUL with the max amounts
+/**
+ * Approve tokens for the deposit contract
+ * @param _tokenAddress 
+ * @param amount 
+ * @returns 
+ */
 export async function ApproveTokens(_tokenAddress: string, amount: string){
 	
 	try {
@@ -262,6 +125,11 @@ export async function ApproveTokens(_tokenAddress: string, amount: string){
 	  }
 }
 
+/**
+ * Check the allowance of a token for the connected wallet
+ * @param _tokenAddress 
+ * @returns 
+ */
 export async function CheckAllowance(_tokenAddress: string){
 	try {
 		let user = await signer?.getAddress();
@@ -274,7 +142,11 @@ export async function CheckAllowance(_tokenAddress: string){
 	  }
 }
 
-/// Get Balance of a token for the connected wallet
+/**
+ * Get the balance of a token for the connected wallet
+ * @param _tokenAddress 
+ * @returns 
+ */
 export async function GetBalance(_tokenAddress: string) {
 	if (!signer) {
 		NotificationError('Wallet Error!', 'Please connect your wallet first.');
@@ -288,6 +160,10 @@ export async function GetBalance(_tokenAddress: string) {
 	return balance;
 }
 
+/**
+ * Get the network info of the connected wallet
+ * @returns 
+ */
 export async function GetNetworkInfo()
 {
 	if (!signer) {
@@ -300,11 +176,8 @@ export async function GetNetworkInfo()
 }
 
 /**
- * Transfer tokens from one address to another
- * @param symbol
- * @param amount
- * @param to
- * @returns
+ * Deposit SOUL to the deposit contract
+ * @param phaAddress 
  */
 export async function DepositSOUL(phaAddress: string){
 	try {
@@ -317,6 +190,10 @@ export async function DepositSOUL(phaAddress: string){
 	}
 }
 
+/**
+ * Deposit KCAL to the deposit contract
+ * @param phaAddress 
+ */
 export async function DepositKCAL(phaAddress: string){
 	try {
 		let contract = new ethers.Contract(DepositAddress, DepositContractABI, provider);
@@ -329,6 +206,10 @@ export async function DepositKCAL(phaAddress: string){
 	
 }
 
+/**
+ * Deposit all tokens to the deposit contract
+ * @param phaAddress 
+ */
 export async function DepositAll(phaAddress: string){
 	try{
 		let contract = new ethers.Contract(DepositAddress, DepositContractABI, provider);
@@ -337,25 +218,4 @@ export async function DepositAll(phaAddress: string){
 	}catch (error) {
 		NotificationError('Error!', 'Token deposit failed. While depositing SOUL and KCAL, please make sure you have enough SOUL and KCAL in your wallet to cover the transaction fee');
 	}	
-}
-
-export async function SendTransactionEthereum(to: string) {
-	if (!signer) {
-		NotificationError('Wallet Error!', 'Please connect your wallet first.');
-		return;
-	}
-
-	const transactionRequest: ethers.TransactionRequest = {
-		from: account,
-		to: to,
-		value: ethers.parseEther('0.01'),
-		gasPrice: ethers.parseUnits('20', 'gwei'),
-		gasLimit: 21000
-	};
-
-	provider.getTransactionCount(account).then((nonce) => {
-		transactionRequest.nonce = nonce;
-	});
-	//provider.getTransaction()
-	const tx = await signer.sendTransaction(transactionRequest);
 }

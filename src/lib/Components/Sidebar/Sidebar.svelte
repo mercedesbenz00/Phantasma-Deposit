@@ -6,19 +6,14 @@
 		LinkWallet,
 		leftSidebarMenu,
 		PhantasmaAPIClient,
-		TestnetURL,
 		MainnetURL,
-		SimnetURL,
 		connectedToWallet,
 		activePage,
 		apiLink,
-		OpenedModal,
 		SoftwareName
 	} from '$lib/store';
 	import { PhantasmaAPI } from 'phantasma-ts/core';
 	import type { PhantasmaLink } from 'phantasma-ts';
-	import { ModalInternalTypes } from '../Modals/ModalInternalTypes';
-	import { NotificationSuccess } from '../Notification/NotificationsBuilder';
 
 	let _apiStatus: boolean;
 

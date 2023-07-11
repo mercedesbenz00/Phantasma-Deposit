@@ -189,9 +189,6 @@
 		console.log(SOULBalance);
 		console.log(KCALBalance);
 	}
-
-	// Check the allowence of the user and if has enough KCAL to pay for the transaction
-	// Change the buttons to Deposit.
 </script>
 
 <Card

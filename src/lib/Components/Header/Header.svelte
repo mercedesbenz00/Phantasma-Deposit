@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import Notification from '$lib/Components/Notification/Notification.svelte';
 	import {
 		activePage,
 		notifications,
@@ -204,31 +203,6 @@
 						<!-- fixed-plugin-button-nav  -->
 					</a>
 				</li>
-
-				<!-- notifications -->
-
-				<!--<li class="relative flex items-center pr-2">
-					<p class="hidden transform-dropdown-show" />
-					<a
-						href="#"
-						class="block p-0 transition-all text-sm ease-nav-brand text-slate-500"
-						aria-expanded="false"
-						on:click={notificationTrigger}
-					>
-						<Icon class="cursor-pointer" icon="fa-bell" />
-					</a>
-					<ul
-						class:transform-dropdown={!notificationsActive}
-						class:transform-dropdown-show={notificationsActive}
-						class:opacity-0={!notificationsActive}
-						class:before:-top-5={!notificationsActive}
-						class="text-sm transform-dropdown before:font-awesome before:leading-default before:duration-350 before:ease-soft lg:shadow-soft-3xl duration-250 min-w-44 before:sm:right-7.5 before:text-5.5 pointer-events-none absolute right-0 top-0 z-50 origin-top list-none rounded-lg border-0 border-solid border-transparent bg-white bg-clip-padding px-2 py-4 text-left text-slate-500 transition-all before:absolute before:right-2 before:left-auto before:top-0 before:z-50 before:inline-block before:font-normal opacity-0 before:text-white before:antialiased before:transition-all before:content-['\f0d8'] sm:-mr-6 lg:absolute lg:right-0 lg:left-auto lg:mt-2 lg:block lg:cursor-pointer"
-					>
-						
-						<Notification />
-						<Notification />
-					</ul>
-				</li>-->
 			</ul>
 		</div>
 	</div>
