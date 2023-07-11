@@ -1,0 +1,146 @@
+[
+	{
+		"inputs": [
+			{ "internalType": "address", "name": "_kcalAddress", "type": "address" },
+			{ "internalType": "address", "name": "_soulAddress", "type": "address" },
+			{ "internalType": "address", "name": "_treasuryAddress", "type": "address" }
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{ "inputs": [], "name": "BalanceIsZero", "type": "error" },
+	{ "inputs": [], "name": "ETHTransferFailed", "type": "error" },
+	{ "inputs": [], "name": "ZeroAddress", "type": "error" },
+	{
+		"anonymous": false,
+		"inputs": [
+			{ "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
+			{ "indexed": false, "internalType": "string", "name": "phAddress", "type": "string" },
+			{ "indexed": false, "internalType": "uint256", "name": "kcalAmount", "type": "uint256" }
+		],
+		"name": "DepositKCAL",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{ "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
+			{ "indexed": false, "internalType": "string", "name": "phAddress", "type": "string" },
+			{ "indexed": false, "internalType": "uint256", "name": "soulAmount", "type": "uint256" }
+		],
+		"name": "DepositSoul",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+			{ "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{ "stateMutability": "payable", "type": "fallback" },
+	{
+		"inputs": [{ "internalType": "string", "name": "phAddress", "type": "string" }],
+		"name": "depositAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "string", "name": "phAddress", "type": "string" }],
+		"name": "depositKCAL",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "string", "name": "phAddress", "type": "string" }],
+		"name": "depositSoul",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "kcalAddress",
+		"outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "uint256", "name": "ethAmount", "type": "uint256" }],
+		"name": "recoverETH",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{ "internalType": "address", "name": "tokenAddress", "type": "address" },
+			{ "internalType": "uint256", "name": "tokenAmount", "type": "uint256" }
+		],
+		"name": "recoverTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "address", "name": "value", "type": "address" }],
+		"name": "setKCALAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "address", "name": "value", "type": "address" }],
+		"name": "setSoulAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "address", "name": "value", "type": "address" }],
+		"name": "setTreasuryAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "soulAddress",
+		"outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "treasuryAddress",
+		"outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{ "stateMutability": "payable", "type": "receive" }
+]
