@@ -15,7 +15,6 @@
 		OpenedModal,
 		SoftwareName
 	} from '$lib/store';
-	import ApiSelector from '$lib/Components/Card/APISelector.svelte';
 	import { PhantasmaAPI } from 'phantasma-ts/core';
 	import type { PhantasmaLink } from 'phantasma-ts';
 	import { ModalInternalTypes } from '../Modals/ModalInternalTypes';
