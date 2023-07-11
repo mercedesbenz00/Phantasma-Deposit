@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
-	let version = '';
+	let version = '1.0.0';
 
 	onMount(async () => {
 		const response = await fetch('version.json');
