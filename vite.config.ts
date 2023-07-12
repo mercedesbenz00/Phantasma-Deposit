@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
+import path from 'path'
 
 
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
 			zlib: 'browserify-zlib',
 			util: 'util',
 			path: 'path-browserify',
+			//elliptic: path.resolve(__dirname, './src/lib/PackageDepends/fixImport.cjs'),
 		}
 	},
 	test: {
