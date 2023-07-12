@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "npm run version:update && vite dev",
-		"version:update": "node version.js",
+		"version:update": "node scripts/version.js",
 		"build": "npm run version:update && vite build",
 		"preview": "npm run version:update && vite preview",
 		"test": "npm run test:integration && npm run test:unit",
