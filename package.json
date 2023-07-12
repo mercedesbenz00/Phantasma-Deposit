@@ -44,6 +44,7 @@
 	"type": "module",
 	"dependencies": {
 		"buffer": "^6.0.3",
+		"elliptic": "^6.5.4",
 		"ethers": "^6.4.0",
 		"iconify": "^1.4.0",
 		"moment": "^2.29.4",
