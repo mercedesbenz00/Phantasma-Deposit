@@ -1,6 +1,6 @@
 # Phantasma Deposit
 
-Phantasma Deposit is a decentralized application (dApp) that empowers users to easily transfer tokens from Ethereum or Binance Smart Chain to Phantasma.
+Phantasma Deposit is a decentralized application (dApp) that empowers users to easily swap tokens from Ethereum or Binance Smart Chain to Phantasma.
 
 ## Tech Stack
 The project utilizes:
