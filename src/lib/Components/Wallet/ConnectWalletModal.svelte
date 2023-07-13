@@ -44,6 +44,37 @@
 	};
 
 	LinkWallet.set(new PhantasmaLink(SoftwareName, true));
+
+	import { onMount } from 'svelte';
+
+	let ws: WebSocket;
+
+	onMount(() => {
+		ws = new WebSocket('ws://localhost:7090/phantasma');
+
+		ws.onopen = () => {
+			console.log('Connection opened');
+		};
+
+		ws.onmessage = (msg) => {
+			console.log('Message received:', msg.data);
+		};
+
+		ws.onerror = (error) => {
+			console.log('Error occurred:', error);
+		};
+
+		ws.onclose = () => {
+			console.log('Connection closed');
+		};
+	});
+
+	// Don't forget to close the connection when the component is destroyed
+	onDestroy(() => {
+		if (ws) {
+			ws.close();
+		}
+	});
 </script>
 
 <Modal title="Connect wallet" modalType={_modalType} on:close={close}>
