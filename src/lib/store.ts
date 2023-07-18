@@ -13,11 +13,18 @@ export const TestnetURL = 'https://testnet.phantasma.io/rpc';
 export const MainnetURL = 'https://bp1.phantasma.io/rpc';
 export const SoftwareName = 'Phantasma Deposit';
 
-export const DepositAddress = '0x32B89a3B44AE22a87dFAe8A79c6Bdf577065E3D4'; // Replace with your contract address
+export const ActiveBlockchain = writable('BNB');
+
+export const DepositAddressBNB = '0x32B89a3B44AE22a87dFAe8A79c6Bdf577065E3D4';
+export const DepositAddressETH = '0x32B89a3B44AE22a87dFAe8A79c6Bdf577065E3D4'; 
+export const DepositAddress = writable(DepositAddressBNB);
+
 export const SOULAddressETH = "0x75858677e27C930FB622759FeafFeE2b754Af07F";
 export const KCALAddressETH = "0x47C1178F49140ECdBfbdF0aE2935cDB640D579F9";
+
 export const SOULAddressBNB = "0x298Eff8af1ecEbbB2c034eaA3b9a5d0Cc56c59CD";
 export const KCALAddressBNB = "0x855EA8048E1852996429A50aBdA60F583909d298";
+
 export const DepositContractABI = DepositContractABIFile; // Replace with your contract ABI
 export const TokenERC20ABI = TokenERC20ABIFile; // The standard ERC20 contract ABI (SOUL / KCAL)
 

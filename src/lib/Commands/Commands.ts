@@ -2,6 +2,7 @@ import {
 	PhantasmaAPI,
 } from 'phantasma-ts/core';
 import {
+	ActiveBlockchain,
 	DepositAddress,
 	DepositContractABI,
 	EthereumAddress,
@@ -38,6 +39,16 @@ GasLimit.subscribe((limit: any) => {
 let gasPrice: number;
 GasPrice.subscribe((price: any) => {
 	gasPrice = price;
+});
+
+let depositAddress: string;
+DepositAddress.subscribe((address: string) => {
+	depositAddress = address;
+});
+
+let connectedChain: string;
+ActiveBlockchain.subscribe((chain: string) => {
+	connectedChain = chain;
 });
 
 export function removeHTMLEntities(str) {
@@ -115,12 +126,12 @@ export async function ApproveTokens(_tokenAddress: string, amount: string){
 		let user = await signer?.getAddress();
 		let contract = new ethers.Contract(_tokenAddress, TokenERC20ABI, provider);
 		let runner = await contract.connect(signer);
-		let approveTx = await runner.approve(DepositAddress, amount);
+		let approveTx = await runner.approve(depositAddress, amount);
 		await approveTx.wait();
 		NotificationSuccess('Success!', 'Token approval successful.');
 		return true;
 	  } catch (error) {
-		NotificationError('Error!', 'Token approval failed.');
+		NotificationError('Error!', `Token approval failed. Please ensure you have sufficient gas tokens <b>${connectedChain}</b> in you wallet to pay the transaction fee.`);
 		return false;
 	  }
 }
@@ -135,11 +146,12 @@ export async function CheckAllowance(_tokenAddress: string){
 		let user = await signer?.getAddress();
 		let contract = new ethers.Contract(_tokenAddress, TokenERC20ABI, provider);
 		let runner = await contract.connect(signer);
-		let allowance = await runner.allowance(user, DepositAddress);
+		let allowance = await runner.allowance(user, depositAddress);
 		return allowance;
-	  } catch (error) {
-		NotificationError('Error!', 'Token allowance check failed.');
-	  }
+	} catch (error) {
+		NotificationError('Error!', `Token allowance check failed. Please ensure you have sufficient gas tokens <b>${connectedChain}</b> in you wallet to pay the transaction fee.`);
+	}
+	return 0;
 }
 
 /**
@@ -181,12 +193,12 @@ export async function GetNetworkInfo()
  */
 export async function DepositSOUL(phaAddress: string){
 	try {
-		let contract = new ethers.Contract(DepositAddress, DepositContractABI, provider);
+		let contract = new ethers.Contract(depositAddress, DepositContractABI, provider);
 		let runner = await contract.connect(signer);
 		await runner.depositSoul(phaAddress);
 		NotificationSuccess('Success!', 'SOUL deposit successful');
 	}catch (error) {
-		NotificationError('Error!', 'Token deposit failed. While depositing SOUL, please make sure you have enough SOUL in your wallet to cover the transaction fee.');
+		NotificationError('Error!', `Deposit failed. Please ensure you have sufficient gas tokens  <b>${connectedChain}</b> in you wallet to pay the transaction fee.`);
 	}
 }
 
@@ -196,12 +208,12 @@ export async function DepositSOUL(phaAddress: string){
  */
 export async function DepositKCAL(phaAddress: string){
 	try {
-		let contract = new ethers.Contract(DepositAddress, DepositContractABI, provider);
+		let contract = new ethers.Contract(depositAddress, DepositContractABI, provider);
 		let runner = await contract.connect(signer);
 		await runner.depositKCAL(phaAddress);
 		NotificationSuccess('Success!', 'KCAL deposit successful');
 	}catch (error) {
-		NotificationError('Error!', 'Token deposit failed. While depositing KCAL, please make sure you have enough KCAL in your wallet to cover the transaction fee.');
+		NotificationError('Error!', `Deposit failed. Please ensure you have sufficient gas tokens  <b>${connectedChain}</b> in you wallet to pay the transaction fee.`);
 	}
 	
 }
@@ -212,10 +224,10 @@ export async function DepositKCAL(phaAddress: string){
  */
 export async function DepositAll(phaAddress: string){
 	try{
-		let contract = new ethers.Contract(DepositAddress, DepositContractABI, provider);
+		let contract = new ethers.Contract(depositAddress, DepositContractABI, provider);
 		let runner = await contract.connect(signer);
 		await runner.depositAll(phaAddress);
 	}catch (error) {
-		NotificationError('Error!', 'Token deposit failed. While depositing SOUL and KCAL, please make sure you have enough SOUL and KCAL in your wallet to cover the transaction fee');
+		NotificationError('Error!', `Deposit failed. Please ensure you have sufficient gas tokens  <b>${connectedChain}</b> in you wallet to pay the transaction fee.`);
 	}	
 }

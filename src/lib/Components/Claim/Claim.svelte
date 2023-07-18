@@ -1,24 +1,19 @@
 <script lang="ts">
 	import Card from '$lib/Components/Card/Card.svelte';
 	import {
+		ActiveBlockchain,
+		DepositAddress,
+		DepositAddressBNB,
+		DepositAddressETH,
 		EthereumAddress,
 		KCALAddressBNB,
 		KCALAddressETH,
 		PhantasmaAPIClient,
 		SOULAddressBNB,
 		SOULAddressETH,
-		allContracts,
-		connectWallet,
-		consoleOutput,
-		contractMethod,
-		contractName,
-		walletOpened
+		connectWallet
 	} from '$lib/store';
-	import {
-		NotificationError,
-		NotificationSuccess,
-		NotificationWarning
-	} from '../Notification/NotificationsBuilder';
+	import { NotificationError, NotificationSuccess } from '../Notification/NotificationsBuilder';
 	import {
 		ApproveTokens,
 		CheckAllowance,
@@ -28,8 +23,7 @@
 		DepositSOUL,
 		DisconnectFromMetamask,
 		GetBalance,
-		GetNetworkInfo,
-		removeHTMLEntities
+		GetNetworkInfo
 	} from '$lib/Commands/Commands';
 	import { ethers } from 'ethers';
 	import type { PhantasmaAPI, Token } from 'phantasma-ts/core';
@@ -84,9 +78,13 @@
 		if (networkInfo.chainId === 56n) {
 			SOULAddress = SOULAddressBNB;
 			KCALAddress = KCALAddressBNB;
+			ActiveBlockchain.set('BNB');
+			DepositAddress.set(DepositAddressBNB);
 		} else if (networkInfo.chainId === 1n) {
 			SOULAddress = SOULAddressETH;
 			KCALAddress = KCALAddressETH;
+			DepositAddress.set(DepositAddressETH);
+			ActiveBlockchain.set('ETH');
 		}
 	}
 
@@ -103,8 +101,7 @@
 
 	$: {
 		if (networkInfo) {
-			CheckAllowances();
-			GetBalances();
+			CheckUserData();
 		}
 	}
 
@@ -173,21 +170,26 @@
 	async function CheckAllowances() {
 		SOULAllowance = await CheckAllowance(SOULAddress);
 		KCALAllowance = await CheckAllowance(KCALAddress);
-		if (SOULAllowance > 0n) {
+		if (SOULAllowance > 0n && SOULAllowance >= SOULBalance) {
 			isSOULApproved = true;
 		}
 
-		if (KCALAllowance > 0n) {
+		if (KCALAllowance > 0n && KCALAllowance >= KCALBalance) {
 			isKCALApproved = true;
 		}
 	}
 
+	/**
+	 * Get Users Balances
+	 */
 	async function GetBalances() {
 		SOULBalance = await GetBalance(SOULAddress);
 		KCALBalance = await GetBalance(KCALAddress);
+	}
 
-		console.log(SOULBalance);
-		console.log(KCALBalance);
+	async function CheckUserData() {
+		await GetBalances();
+		await CheckAllowances();
 	}
 </script>
 
@@ -246,16 +248,10 @@
 						<p>
 							Connected to
 							<b>
-								{#if networkInfo !== undefined}
-									{#if networkInfo.chainId === 56n}
-										Binance Smart Chain
-									{:else if networkInfo.chainId === 1n}
-										Ethereum
-									{:else}
-										Unknown
-									{/if}
-								{:else}
-									Unknown
+								{#if $ActiveBlockchain === 'BNB'}
+									Binance Smart Chain
+								{:else if $ActiveBlockchain === 'ETH'}
+									Ethereum
 								{/if}
 							</b>
 							via Metamask <br /><b>{ethAddress}</b>
