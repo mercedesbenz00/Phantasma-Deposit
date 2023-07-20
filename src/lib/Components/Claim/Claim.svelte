@@ -196,18 +196,17 @@
 <Card
 	size="xl"
 	title="Token Deposit"
-	description="Deposit tokens from Eth / Bsc to Phantasma."
+	description="Swap SOUL and KCAL tokens from Ethereum and BSC to Phantasma."
 	class="mb-20"
 >
 	<div class="my-1">
 		<form on:submit|preventDefault={() => null}>
 			<p>
-				Experience seamless cross-chain transactions with our Dual-Wallet Deposit Interface. Connect
-				both your Metamask and Phantasma (Ecto or Poltergeist) wallets, deposit your funds, and let
-				us take care of the rest. Our dApp bridges the gap between Ethereum or Binance Smart Chain
-				and the Phantasma Chain, allowing you to deposit and transfer your assets securely and
-				effortlessly. Start harnessing the power of blockchain interoperability today with our
-				user-friendly and transparent service.
+				Connect both your Metamask and Phantasma (Ecto or Poltergeist) wallets, deposit SOUL and/or
+				KCAL tokens, and let us take care of the rest. Our dApp bridges the gap between Ethereum or
+				Binance Smart Chain and the Phantasma Chain, allowing you to deposit and transfer your
+				assets securely and effortlessly. Please allow up to 24 hours to receive your tokens on
+				Phantasma.
 			</p>
 
 			<div class="grid md:grid-cols md:gap-6">
